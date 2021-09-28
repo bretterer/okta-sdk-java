@@ -11,24 +11,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          reg: 'gh-pages'
-          path: 'target/gh-pages/'
-      - name: Create gh_pages Branch
-        uses: christopherdavenport/create-ghpages-ifnotexists@v1
-      - name: Setup Java and Maven
-        uses: s4u/setup-maven-action@< version >
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v2
         with:
           java-version: 8
-          maven-version: '3.8.2'
+
       - name: Build Javadoc
+        run: mvn -s src/ci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -V javadoc:aggregate com.okta:okta-doclist-maven-plugin:generate jxr:aggregate -Ppub-docs -Pci
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./target/gh-pages
-
-## git clone -b gh-pages "https://github.com/${REPO_SLUG}.git" target/gh-pages/
-## MVN_CMD="./mvnw -s src/ci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -V"
-## ${MVN_CMD} javadoc:aggregate com.okta:okta-doclist-maven-plugin:generate jxr:aggregate -Ppub-docs -Pci
