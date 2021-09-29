@@ -12,6 +12,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Install xmllint
+        run: sudo apt-get install libxml2-utils
+
       - name: Setup Java JDK
         uses: actions/setup-java@v2
         with:
