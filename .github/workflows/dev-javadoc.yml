@@ -1,9 +1,9 @@
-name: Build and Deploy Javadoc to GitHub Pages
+name: Build Development Javadoc
 
 on:
   push:
-    tags:
-     - '*'
+    branches:
+     - 'master'
 
 jobs:
   deploy:
@@ -19,10 +19,10 @@ jobs:
           distribution: temurin
           cache: maven
 
-      - name: Build Javadoc
-        run: mvn -s src/ci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn install javadoc:aggregate com.okta:okta-doclist-maven-plugin:generate jxr:aggregate -Ppub-docs -Pci
+      - name: Build Javadoc for Development version
+        run: mvn -s src/ci/settings.xml -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn install -DskipITs javadoc:aggregate com.okta:okta-doclist-maven-plugin:generate jxr:aggregate -Ppub-docs -Pci
 
-      - name: Deploy
+      - name: Deploy Development Version of Javadoc to Github Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

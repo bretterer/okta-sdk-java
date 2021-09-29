@@ -1,0 +1,23 @@
+name: Build Release
+
+on:
+  push:
+    tags:
+     - '*'
+
+jobs:
+  javadoc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: 8
+          distribution: temurin
+          cache: maven
+
+      - name: Run Release script
+        run: src/ci/release.sh
